@@ -1,6 +1,6 @@
 package com.valunskii.demo.twitter.to.kafka.service.runner.impl;
 
-import com.valunskii.demo.twitter.to.kafka.service.config.TwitterToKafkaServiceConfigData;
+import com.valunskii.demo.config.TwitterToKafkaServiceConfigData;
 import com.valunskii.demo.twitter.to.kafka.service.exception.TwitterToKafkaServiceException;
 import com.valunskii.demo.twitter.to.kafka.service.listener.TwitterKafkaStatusListener;
 import com.valunskii.demo.twitter.to.kafka.service.runner.StreamRunner;
@@ -112,9 +112,9 @@ public class MockKafkaStreamRunner implements StreamRunner {
 
     @Override
     public void start() throws TwitterException {
-        String[] keywords = twitterToKafkaServiceConfigData.getTwitterKeywords().toArray(new String[0]);
-        int minTweetLength = twitterToKafkaServiceConfigData.getMockMinTweetLength();
-        int maxTweetLength = twitterToKafkaServiceConfigData.getMockMaxTweetLength();
+        final String[] keywords = twitterToKafkaServiceConfigData.getTwitterKeywords().toArray(new String[0]);
+        final int minTweetLength = twitterToKafkaServiceConfigData.getMockMinTweetLength();
+        final int maxTweetLength = twitterToKafkaServiceConfigData.getMockMaxTweetLength();
         long sleepTimeMs = twitterToKafkaServiceConfigData.getMockSleepMs();
         log.info("Starting mock filtering twitter streams for keywords {}", Arrays.toString(keywords));
         simulateTwitterStream(keywords, minTweetLength, maxTweetLength, sleepTimeMs);

@@ -1,10 +1,10 @@
 package com.valunskii.demo.twitter.to.kafka.service.runner.impl;
 
-import com.valunskii.demo.twitter.to.kafka.service.config.TwitterToKafkaServiceConfigData;
+import com.valunskii.demo.config.TwitterToKafkaServiceConfigData;
 import com.valunskii.demo.twitter.to.kafka.service.listener.TwitterKafkaStatusListener;
 import com.valunskii.demo.twitter.to.kafka.service.runner.StreamRunner;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 import twitter4j.FilterQuery;
@@ -15,23 +15,15 @@ import twitter4j.TwitterStreamFactory;
 import javax.annotation.PreDestroy;
 import java.util.Arrays;
 
+@Slf4j
 @Component
+@RequiredArgsConstructor
 @ConditionalOnProperty(name = "twitter-to-kafka-service.enable-mock-tweets", havingValue = "false", matchIfMissing = true)
 public class TwitterKafkaStreamRunner implements StreamRunner {
-
-    private static final Logger LOG = LoggerFactory.getLogger(TwitterKafkaStreamRunner.class);
-
+    
     private final TwitterToKafkaServiceConfigData twitterToKafkaServiceConfigData;
-
     private final TwitterKafkaStatusListener twitterKafkaStatusListener;
-
     private TwitterStream twitterStream;
-
-    public TwitterKafkaStreamRunner(TwitterToKafkaServiceConfigData configData,
-                                    TwitterKafkaStatusListener statusListener) {
-        this.twitterToKafkaServiceConfigData = configData;
-        this.twitterKafkaStatusListener = statusListener;
-    }
 
     @Override
     public void start() throws TwitterException {
@@ -43,7 +35,7 @@ public class TwitterKafkaStreamRunner implements StreamRunner {
     @PreDestroy
     public void shutdown() {
         if (twitterStream != null) {
-            LOG.info("Closing twitter stream!");
+            log.info("Closing twitter stream!");
             twitterStream.shutdown();
         }
     }
@@ -52,6 +44,6 @@ public class TwitterKafkaStreamRunner implements StreamRunner {
         String[] keywords = twitterToKafkaServiceConfigData.getTwitterKeywords().toArray(new String[0]);
         FilterQuery filterQuery = new FilterQuery(keywords);
         twitterStream.filter(filterQuery);
-        LOG.info("Started filtering twitter stream for keywords {}", Arrays.toString(keywords));
+        log.info("Started filtering twitter stream for keywords {}", Arrays.toString(keywords));
     }
 }
