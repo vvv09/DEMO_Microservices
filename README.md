@@ -105,3 +105,6 @@
 
 ## Создане Twitter-to-kafka-service
 
+https://twitter4j.org/en/configuration.html
+https://developer.twitter.com/
+
